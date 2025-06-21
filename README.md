@@ -5,10 +5,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/econar/Liberchat-Liberchat-3.4/actions/workflows/flutter.yml"><img src="https://img.shields.io/github/workflow/status/econar/Liberchat-Liberchat-3.4/Flutter%20CI?label=build&logo=github" alt="Build Status"></a>
+  <a href="https://github.com/AnARCHIS12/Liberchat-android/actions/workflows/flutter.yml"><img src="https://img.shields.io/github/workflow/status/AnARCHIS12/Liberchat-android/Flutter%20CI?label=build&logo=github" alt="Build Status"></a>
   <img src="https://img.shields.io/badge/Flutter-Android%20Only-green?logo=android" alt="Platform Android">
-  <img src="https://img.shields.io/github/license/econar/Liberchat-Liberchat-3.4" alt="License">
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
 </p>
+
 
 ---
 
