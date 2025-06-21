@@ -1,0 +1,60 @@
+# Liberchat
+
+<p align="center">
+  <img src="assets/logo.png" alt="Liberchat Logo" width="120" />
+</p>
+
+<p align="center">
+  <a href="https://github.com/econar/Liberchat-Liberchat-3.4/actions/workflows/flutter.yml"><img src="https://img.shields.io/github/workflow/status/econar/Liberchat-Liberchat-3.4/Flutter%20CI?label=build&logo=github" alt="Build Status"></a>
+  <img src="https://img.shields.io/badge/Flutter-Android%20Only-green?logo=android" alt="Platform Android">
+  <img src="https://img.shields.io/github/license/econar/Liberchat-Liberchat-3.4" alt="License">
+</p>
+
+---
+
+Liberchat est une application de chat moderne, open-source, basée sur Flutter et dédiée uniquement à Android. Les autres plateformes Flutter ne sont pas supportées ni maintenues.
+
+## ✨ Fonctionnalités
+- Interface moderne et responsive
+- Support Android uniquement
+- WebView sécurisé avec gestion des permissions (micro, caméra)
+- Splash screen animé
+- Thème sombre élégant
+- Icône personnalisée
+
+## 🚀 Installation
+```bash
+# Clonez le repo
+ git clone https://github.com/AnARCHIS12/Liberchat-android
+ cd liberchat_mobile
+
+# Installez les dépendances
+ flutter pub get
+
+# Lancez l'application sur Android
+ flutter run
+```
+
+## 📱 Captures d’écran
+<p align="center">
+  <img src="assets/screenshot1.png" width="200" />
+  <img src="assets/screenshot2.png" width="200" />
+</p>
+
+## 🛠️ Développement
+- Flutter 3.x recommandé
+- Voir `pubspec.yaml` pour les dépendances
+- Code principal dans `lib/`
+
+## 🤝 Contribuer
+Les contributions sont les bienvenues ! Ouvrez une issue ou une pull request.
+
+## 📄 Licence
+Ce projet est sous licence MIT.
+
+---
+
+<p align="center">
+  <b>Made with ❤️ by the Liberchat team</b>
+</p>
+# Liberchat-android
