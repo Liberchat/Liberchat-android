@@ -36,11 +36,6 @@ Liberchat est une application de chat moderne, open-source, basée sur Flutter e
  flutter run
 ```
 
-## 📱 Captures d’écran
-<p align="center">
-  <img src="assets/screenshot1.png" width="200" />
-  <img src="assets/screenshot2.png" width="200" />
-</p>
 
 ## 🛠️ Développement
 - Flutter 3.x recommandé
