@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_inappwebview_platform_interface/flutter_inappwebview_platform_interface.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'permission_request.dart';
 import 'server_selection_screen.dart';
+import 'orbot_check.dart';
+import 'orbot_help_dialog.dart';
 
 void main() {
   runApp(const MyApp());
@@ -210,20 +211,51 @@ class LiberchatWebView extends StatefulWidget {
 class _LiberchatWebViewState extends State<LiberchatWebView> {
   InAppWebViewController? _webViewController;
   bool _isLoading = true;
+  bool _useTor = false; // Ajout du mode Tor
+  bool _checkingOrbot = false;
 
   @override
   void initState() {
     super.initState();
+    _loadTorState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       requestMicrophonePermission(context);
     });
+  }
+
+  Future<void> _loadTorState() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _useTor = prefs.getBool('use_tor') ?? false;
+    });
+  }
+
+  Future<void> _saveTorState(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('use_tor', value);
+  }
+
+  Future<void> _toggleTor() async {
+    if (!_useTor) {
+      setState(() => _checkingOrbot = true);
+      final running = await isOrbotRunning();
+      setState(() => _checkingOrbot = false);
+      if (!running) {
+        showOrbotHelpDialog(context);
+        return;
+      }
+    }
+    setState(() {
+      _useTor = !_useTor;
+    });
+    _saveTorState(!_useTor ? false : true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(44), // Hauteur réduite
+        preferredSize: const Size.fromHeight(44),
         child: AppBar(
           backgroundColor: Colors.black.withOpacity(0.7),
           elevation: 8,
@@ -291,6 +323,16 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
                     ],
                   ),
                 ),
+                PopupMenuItem(
+                  value: 3,
+                  child: Row(
+                    children: [
+                      Icon(_useTor ? Icons.shield : Icons.shield_outlined, color: Colors.amber),
+                      const SizedBox(width: 8),
+                      Text(_useTor ? 'Désactiver Tor' : 'Activer Tor'),
+                    ],
+                  ),
+                ),
               ],
               onSelected: (value) async {
                 if (value == 1) {
@@ -305,6 +347,10 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('URL non disponible.')),
                     );
+                  }
+                } else if (value == 3) {
+                  if (!_checkingOrbot) {
+                    _toggleTor();
                   }
                 }
               },
@@ -370,6 +416,10 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
           if (_isLoading)
             const Center(
               child: CircularProgressIndicator(color: Colors.white),
+            ),
+          if (_checkingOrbot)
+            const Center(
+              child: CircularProgressIndicator(color: Colors.amber),
             ),
         ],
       ),
