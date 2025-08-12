@@ -1,0 +1,79 @@
+From 3bb511bdf9dff983857c4b021ee8e51b46d6cb96 Mon Sep 17 00:00:00 2001
+From: AnARCHIS12 <fakachampionship@gmail.com>
+Date: Tue, 12 Aug 2025 13:39:12 +0200
+Subject: [PATCH] Add Liberchat v3.5.0 - Modern open-source chat application
+
+- Flutter-based chat application for Android
+- MIT licensed
+- Features: modern UI, Tor support, server selection
+- Repository: https://github.com/Liberchat/Liberchat-android
+---
+ metadata/com.liberchat.mobile.yml | 55 +++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+ create mode 100644 metadata/com.liberchat.mobile.yml
+
+diff --git a/metadata/com.liberchat.mobile.yml b/metadata/com.liberchat.mobile.yml
+new file mode 100644
+index 0000000000..63459f27f6
+--- /dev/null
++++ b/metadata/com.liberchat.mobile.yml
+@@ -0,0 +1,55 @@
++Categories:
++  - Internet
++  - System
++
++License: MIT
++
++AuthorName: Liberchat team
++AuthorEmail: [email]
++AuthorWebSite: https://github.com/Liberchat
++
++WebSite: https://github.com/Liberchat/Liberchat-android
++SourceCode: https://github.com/Liberchat/Liberchat-android
++IssueTracker: https://github.com/Liberchat/Liberchat-android/issues
++
++AutoName: Liberchat
++Name: Liberchat
++
++Summary: Application de chat moderne et open-source
++
++Description: |-
++    Liberchat est une application de chat moderne, open-source, basée sur Flutter et dédiée uniquement à Android.
++    
++    Fonctionnalités principales :
++    * Interface moderne et responsive
++    * WebView sécurisé avec gestion des permissions
++    * Splash screen animé
++    * Thème sombre élégant
++    * Sélection du serveur au démarrage (auto-hébergement possible)
++    * Support de Tor via Orbot pour la confidentialité
++    
++    L'application permet de se connecter à différents serveurs de chat et offre une expérience utilisateur fluide avec un design moderne.
++
++RepoType: git
++Repo: https://github.com/Liberchat/Liberchat-android
++
++Builds:
++  - versionName: 3.5.0
++    versionCode: 35
++    commit: Liberchat3.5
++    subdir: .
++    sudo:
++      - apt-get update
++      - apt-get install -y openjdk-17-jdk-headless
++      - update-java-alternatives -a
++    init: flutter pub get
++    gradle:
++      - yes
++    output: build/app/outputs/flutter-apk/app-release.apk
++    prebuild: |-
++      flutter build apk --release
++
++AutoUpdateMode: Version
++UpdateCheckMode: Tags
++CurrentVersion: 3.5.0
++CurrentVersionCode: 35
+\ No newline at end of file
+-- 
+2.39.5
+

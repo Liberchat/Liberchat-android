@@ -1,0 +1,7 @@
+# Appfile for Liberchat
+
+# Application package name
+package_name("com.liberchat.mobile")
+
+# For F-Droid compatibility
+json_key_file("")
