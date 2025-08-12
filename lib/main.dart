@@ -6,8 +6,12 @@ import 'permission_request.dart';
 import 'server_selection_screen.dart';
 import 'orbot_check.dart';
 import 'orbot_help_dialog.dart';
+import 'error_handler.dart';
 
 void main() {
+  // Initialiser la gestion d'erreurs
+  ErrorHandler.initialize();
+  
   runApp(const MyApp());
 }
 
@@ -107,6 +111,21 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _showServerSelection();
   }
 
+  Widget _buildLogo() {
+    try {
+      return Image.asset(
+        'assets/logo.png',
+        width: 120,
+        height: 120,
+        errorBuilder: (context, error, stackTrace) {
+          return ErrorHandler.buildFallbackLogo(size: 120);
+        },
+      );
+    } catch (e) {
+      return ErrorHandler.buildFallbackLogo(size: 120);
+    }
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -148,11 +167,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Image.asset(
-                        'assets/logo.png',
-                        width: 120,
-                        height: 120,
-                      ),
+                      child: _buildLogo(),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -251,6 +266,21 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
     _saveTorState(!_useTor ? false : true);
   }
 
+  Widget _buildAppBarLogo() {
+    try {
+      return Image.asset(
+        'assets/logo.png', 
+        width: 36, 
+        height: 36,
+        errorBuilder: (context, error, stackTrace) {
+          return ErrorHandler.buildFallbackLogo(size: 36);
+        },
+      );
+    } catch (e) {
+      return ErrorHandler.buildFallbackLogo(size: 36);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -266,7 +296,7 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.asset('assets/logo.png', width: 36, height: 36),
+                child: _buildAppBarLogo(),
               ),
               const SizedBox(width: 12),
               const Text(
