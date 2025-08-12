@@ -39,15 +39,6 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
-        debug {
-            // Configuration pour les captures d'écran
-            testCoverageEnabled = true
-        }
-    }
-    
-    // Configuration pour les tests
-    testOptions {
-        execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
 }
 
@@ -56,11 +47,10 @@ flutter {
 }
 
 dependencies {
-    // Dépendances pour les captures d'écran Fastlane
-    androidTestImplementation("tools.fastlane:screengrab:2.1.1")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
-    androidTestUtil("androidx.test:orchestrator:1.4.2")
+    // Dépendances pour les captures d'écran Fastlane (optionnelles)
+    // androidTestImplementation("tools.fastlane:screengrab:2.1.1")
+    // androidTestImplementation("androidx.test:runner:1.5.2")
+    // androidTestImplementation("androidx.test:rules:1.5.0")
+    // androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    // androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
 }
