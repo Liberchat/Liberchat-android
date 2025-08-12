@@ -7,13 +7,17 @@ platform :android do
   lane :screenshots do
     gradle(task: "clean")
     gradle(task: "assembleDebug")
+    gradle(task: "assembleDebugAndroidTest")
     
     # Generate screenshots using screengrab
     screengrab(
       locales: ['en-US', 'fr-FR'],
       clear_previous_screenshots: true,
       output_directory: 'fastlane/metadata/android',
-      skip_open_summary: true
+      skip_open_summary: true,
+      test_instrumentation_runner: 'androidx.test.runner.AndroidJUnitRunner',
+      use_tests_in_classes: ['com.liberchat.mobile.ScreenshotTest'],
+      app_package_name: 'com.liberchat.mobile'
     )
   end
 
