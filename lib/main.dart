@@ -420,12 +420,28 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
               },
               onLoadStop: (controller, url) {
                 setState(() => _isLoading = false);
+                debugPrint('WebView loaded: $url');
+              },
+              onLoadError: (controller, url, code, message) {
+                debugPrint('WebView error: $code - $message for URL: $url');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Erreur de chargement: $message')),
+                );
+              },
+              onLoadHttpError: (controller, url, statusCode, description) {
+                debugPrint('WebView HTTP error: $statusCode - $description for URL: $url');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Erreur HTTP $statusCode: $description')),
+                );
               },
               initialOptions: InAppWebViewGroupOptions(
                 crossPlatform: InAppWebViewOptions(
                   useShouldOverrideUrlLoading: true,
                   mediaPlaybackRequiresUserGesture: false,
                   javaScriptEnabled: true,
+                  clearCache: true,
+                  cacheEnabled: false,
+                  userAgent: 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36',
                 ),
                 android: AndroidInAppWebViewOptions(
                   useHybridComposition: true,

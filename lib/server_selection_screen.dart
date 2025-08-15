@@ -11,7 +11,7 @@ class ServerSelectionScreen extends StatefulWidget {
 class _ServerSelectionScreenState extends State<ServerSelectionScreen> {
   final TextEditingController _controller = TextEditingController();
   final List<String> _presets = [
-    'https://liberchat.cnt-ait-contact.noho.st/liberchat'
+    'https://liberchat.cnt-ait-contact.noho.st/liberchat/'
   ];
   String? _selectedPreset;
 
