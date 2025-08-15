@@ -34,9 +34,9 @@ RepoType: git
 Repo: https://github.com/Liberchat/Liberchat-android
 
 Builds:
-  - versionName: 3.5.0
+  - versionName: 3.5.1
     versionCode: 35
-    commit: v3.5.0
+    commit: v3.5.1
     subdir: .
     sudo:
       - apt-get update
