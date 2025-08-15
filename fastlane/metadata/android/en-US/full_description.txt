@@ -1,0 +1,16 @@
+Liberchat is a modern, open-source chat application built with Flutter, dedicated to Android.
+
+Key Features:
+• Modern and responsive interface
+• Secure WebView with permission management
+• Animated splash screen
+• Elegant dark theme
+• Server selection at startup (self-hosting possible)
+• Tor support via Orbot for privacy
+• No trackers or ads
+• Fully open source
+
+Privacy & Security:
+Liberchat respects your privacy with no data collection, full open source code, Tor support for anonymous browsing, self-hosting capabilities, and encrypted communications.
+
+The application allows connecting to different chat servers and offers a smooth user experience with modern design, while maintaining complete privacy and security for users.
