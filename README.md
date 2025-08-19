@@ -30,7 +30,7 @@ Liberchat est une application de chat moderne, open-source, basée sur Flutter e
 ## 📦 Installation
 
 ### F-Droid (Recommandé)
-🚀 **Liberchat v3.5.0 a été soumise à F-Droid !**
+🚀 **Liberchat v3.5.1 a été soumise à F-Droid !**
 
 L'application sera bientôt disponible sur F-Droid. En attendant l'approbation, vous pouvez :
 
