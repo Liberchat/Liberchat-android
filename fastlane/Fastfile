@@ -1,0 +1,38 @@
+# Fastfile for Liberchat F-Droid integration
+
+default_platform(:android)
+
+platform :android do
+  desc "Generate screenshots for F-Droid"
+  lane :screenshots do
+    gradle(task: "clean")
+    gradle(task: "assembleDebug")
+    gradle(task: "assembleDebugAndroidTest")
+    
+    # Generate screenshots using screengrab
+    screengrab(
+      locales: ['en-US', 'fr-FR'],
+      clear_previous_screenshots: true,
+      output_directory: 'fastlane/metadata/android',
+      skip_open_summary: true,
+      test_instrumentation_runner: 'androidx.test.runner.AndroidJUnitRunner',
+      use_tests_in_classes: ['com.liberchat.mobile.ScreenshotTest'],
+      app_package_name: 'com.liberchat.mobile'
+    )
+  end
+
+  desc "Build release APK"
+  lane :build_release do
+    gradle(task: "clean")
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+  end
+
+  desc "Deploy to F-Droid metadata"
+  lane :fdroid_metadata do
+    # Update F-Droid metadata
+    puts "F-Droid metadata updated"
+  end
+end

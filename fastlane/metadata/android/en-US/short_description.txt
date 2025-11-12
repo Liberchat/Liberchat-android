@@ -1,0 +1,1 @@
+Modern open-source chat application with privacy features
