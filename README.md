@@ -140,5 +140,5 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE.md](LICENSE.md) pour pl
 
 <p align="center">
   <b>Made with ❤️ by the Liberchat team</b><br>
-  <i>Liberchat v3.5.0 - Soumise à F-Droid le 12 août 2025</i>
+  <i>Liberchat v3.5.1 - le 12 août 2025</i>
 </p>
