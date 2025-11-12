@@ -8,7 +8,7 @@
   <a href="https://github.com/Liberchat/Liberchat-android/releases"><img src="https://img.shields.io/github/v/release/Liberchat/Liberchat-android?label=version&logo=github" alt="Latest Release"></a>
   <img src="https://img.shields.io/badge/Flutter-Android%20Only-green?logo=android" alt="Platform Android">
   <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
-  <img src="https://img.shields.io/badge/F--Droid-Submitted-orange?logo=f-droid" alt="F-Droid Status">
+
 </p>
 
 ---
