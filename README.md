@@ -46,7 +46,7 @@ Téléchargez la dernière version APK depuis :
 adb install app-release.apk
 ```
 
-## 🚀 Développement local
+##  Développement local
 ```bash
 # Clonez le repo
 git clone https://github.com/Liberchat/Liberchat-android
@@ -59,7 +59,7 @@ flutter pub get
 flutter run
 ```
 
-## 🛠️ Développement
+##  Développement
 
 ### Prérequis
 - Flutter 3.8.1+
