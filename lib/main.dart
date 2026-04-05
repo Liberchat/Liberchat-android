@@ -325,11 +325,15 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
           _applyTheme();
         });
 
+        final appBarForeground = themeManager.primaryColor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(44),
             child: AppBar(
               backgroundColor: themeManager.primaryColor.withValues(alpha: 0.9),
+              foregroundColor: appBarForeground,
+              iconTheme: IconThemeData(color: appBarForeground),
               elevation: 8,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
@@ -339,7 +343,7 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
               title: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black54, width: 1.5),
+                  border: Border.all(color: appBarForeground.withValues(alpha: 0.5), width: 1.5),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -347,7 +351,7 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold, 
                     fontSize: themeManager.fontSize,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                    color: appBarForeground,
                   ),
                 ),
               ),
