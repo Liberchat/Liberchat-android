@@ -9,7 +9,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Paramètres'),
+        title: const Text('Settings'),
         elevation: 0,
       ),
       body: Consumer<ThemeManager>(
@@ -43,7 +43,7 @@ class SettingsScreen extends StatelessWidget {
                 Icon(Icons.brightness_6, color: themeManager.primaryColor),
                 const SizedBox(width: 8),
                 Text(
-                  'Mode d\'affichage',
+                  'Display Mode',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ],
@@ -81,7 +81,7 @@ class SettingsScreen extends StatelessWidget {
                 Icon(Icons.palette, color: themeManager.primaryColor),
                 const SizedBox(width: 8),
                 Text(
-                  'Couleur du thème',
+                  'Theme Color',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ],
@@ -107,7 +107,7 @@ class SettingsScreen extends StatelessWidget {
                         : null,
                       boxShadow: [
                         BoxShadow(
-                          color: color.withOpacity(0.3),
+                          color: color.withValues(alpha: 0.3),
                           blurRadius: 8,
                           spreadRadius: isSelected ? 2 : 0,
                         ),
@@ -122,7 +122,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Couleur sélectionnée: ${themeManager.colorName}',
+              'Selected color: ${themeManager.colorName}',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -143,7 +143,7 @@ class SettingsScreen extends StatelessWidget {
                 Icon(Icons.text_fields, color: themeManager.primaryColor),
                 const SizedBox(width: 8),
                 Text(
-                  'Taille de police',
+                  'Font Size',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ],
@@ -169,7 +169,7 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
             Text(
-              'Taille actuelle: ${themeManager.fontSize.round()}px',
+              'Current size: ${themeManager.fontSize.round()}px',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -190,7 +190,7 @@ class SettingsScreen extends StatelessWidget {
                 Icon(Icons.preview, color: themeManager.primaryColor),
                 const SizedBox(width: 8),
                 Text(
-                  'Aperçu',
+                  'Preview',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ],
@@ -200,25 +200,25 @@ class SettingsScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: themeManager.primaryColor.withOpacity(0.1),
+                color: themeManager.primaryColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: themeManager.primaryColor.withOpacity(0.3)),
+                border: Border.all(color: themeManager.primaryColor.withValues(alpha: 0.3)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Titre principal',
+                    'Main Title',
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Ceci est un exemple de texte avec la taille de police actuelle. Vous pouvez voir comment le texte apparaîtra dans l\'application.',
+                    'This is an example text with the current font size. You can see how the text will appear in the application.',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Texte secondaire plus petit',
+                    'Smaller secondary text',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
@@ -233,22 +233,22 @@ class SettingsScreen extends StatelessWidget {
   String _getThemeModeLabel(AppThemeMode mode) {
     switch (mode) {
       case AppThemeMode.light:
-        return 'Clair';
+        return 'Light';
       case AppThemeMode.dark:
-        return 'Sombre';
+        return 'Dark';
       case AppThemeMode.auto:
-        return 'Automatique';
+        return 'Automatic';
     }
   }
 
   String _getThemeModeDescription(AppThemeMode mode) {
     switch (mode) {
       case AppThemeMode.light:
-        return 'Toujours en mode clair';
+        return 'Always in light mode';
       case AppThemeMode.dark:
-        return 'Toujours en mode sombre';
+        return 'Always in dark mode';
       case AppThemeMode.auto:
-        return 'Suit les paramètres du système';
+        return 'Follows system settings';
     }
   }
 

@@ -1,9 +1,9 @@
-// Fichier pour les variables globales de l'application
+// File for global application variables
 
-// Exemple de variable globale
+// Global variable example
 String appVersion = '1.0.0';
 
-// Vous pouvez ajouter d'autres variables ici
+// You can add other variables here
 String? globalPassword;
 String? globalUsername;
 String? globalRoom;

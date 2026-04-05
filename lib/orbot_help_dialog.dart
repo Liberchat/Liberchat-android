@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'orbot_check.dart';
 
 Future<void> showOrbotHelpDialog(BuildContext context) async {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Orbot non détecté'),
+      title: const Text('Orbot not detected'),
       content: const Text(
-        'Le mode Tor nécessite Orbot.\n\nVeuillez démarrer Orbot (ou activer le proxy Tor) sur votre appareil, puis réessayez.\n\nOrbot est disponible gratuitement sur Google Play et F-Droid.',
+        'Tor mode requires Orbot.\n\nPlease start Orbot (or enable Tor proxy) on your device, then try again.\n\nOrbot is available for free on Google Play and F-Droid.',
       ),
       actions: [
         TextButton(
@@ -18,7 +17,7 @@ Future<void> showOrbotHelpDialog(BuildContext context) async {
             final url = await canLaunchUrl(Uri.parse(orbotPlay)) ? orbotPlay : orbotFdroid;
             await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
           },
-          child: const Text('Installer Orbot'),
+          child: const Text('Install Orbot'),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),

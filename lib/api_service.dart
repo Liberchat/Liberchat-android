@@ -31,7 +31,7 @@ class ApiService {
       final List<dynamic> data = jsonDecode(response.body);
       return data.map((json) => Message.fromJson(json)).toList();
     }
-    throw Exception('Erreur lors du chargement des messages');
+    throw Exception('Error loading messages');
   }
 
   Future<bool> sendMessage(String content) async {

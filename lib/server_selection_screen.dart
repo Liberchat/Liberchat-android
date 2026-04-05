@@ -39,12 +39,12 @@ class _ServerSelectionScreenState extends State<ServerSelectionScreen> {
             title: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                'Choisir le serveur Liberchat',
+                'Choose Liberchat server',
                 style: TextStyle(fontSize: fontSize + 2),
               ),
             ),
             centerTitle: true,
-            backgroundColor: primaryColor.withOpacity(0.9),
+            backgroundColor: primaryColor.withValues(alpha: 0.9),
             elevation: 8,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -57,7 +57,7 @@ class _ServerSelectionScreenState extends State<ServerSelectionScreen> {
                   gradient: LinearGradient(
                     colors: [
                       backgroundColor,
-                      primaryColor.withOpacity(0.3),
+                      primaryColor.withValues(alpha: 0.3),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -70,16 +70,16 @@ class _ServerSelectionScreenState extends State<ServerSelectionScreen> {
                 padding: const EdgeInsets.all(24.0),
                 decoration: BoxDecoration(
                   color: isDark 
-                    ? Colors.grey[800]!.withOpacity(0.9)
-                    : Colors.white.withOpacity(0.9),
+                    ? Colors.grey[800]!.withValues(alpha: 0.9)
+                    : Colors.white.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: primaryColor.withOpacity(0.3),
+                    color: primaryColor.withValues(alpha: 0.3),
                     width: 1,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: primaryColor.withOpacity(0.3),
+                      color: primaryColor.withValues(alpha: 0.3),
                       blurRadius: 24,
                       spreadRadius: 2,
                     ),
@@ -126,7 +126,7 @@ class _ServerSelectionScreenState extends State<ServerSelectionScreen> {
                         fontSize: fontSize,
                       ),
                       decoration: InputDecoration(
-                        labelText: 'URL du serveur',
+                        labelText: 'Server URL',
                         labelStyle: TextStyle(
                           color: isDark ? Colors.white70 : Colors.black54,
                           fontSize: fontSize,
@@ -138,7 +138,7 @@ class _ServerSelectionScreenState extends State<ServerSelectionScreen> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: primaryColor, width: 2),
                         ),
-                        helperText: "Vous pouvez saisir l'URL d'un serveur auto-hébergé.",
+                        helperText: "You can enter the URL of a self-hosted server.",
                         helperStyle: TextStyle(
                           color: isDark ? Colors.white54 : Colors.black45,
                           fontSize: fontSize - 2,
@@ -167,7 +167,7 @@ class _ServerSelectionScreenState extends State<ServerSelectionScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  'Veuillez saisir une URL valide commençant par http:// ou https://',
+                                  'Please enter a valid URL starting with http:// or https://',
                                   style: TextStyle(fontSize: fontSize),
                                 ),
                               ),
@@ -177,7 +177,7 @@ class _ServerSelectionScreenState extends State<ServerSelectionScreen> {
                           widget.onServerSelected(url);
                         },
                         child: Text(
-                          'Continuer',
+                          'Continue',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontSize + 2,

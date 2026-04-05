@@ -13,28 +13,31 @@ import 'theme_manager.dart';
 import 'settings_screen.dart';
 import 'webview_theme_injector.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialiser la gestion d'erreurs
-  ErrorHandler.initialize();
-  
-  // Initialiser le gestionnaire de thèmes
-  final themeManager = ThemeManager();
-  await themeManager.loadSettings();
-  
-  // Capturer les erreurs non gérées
-  runZonedGuarded(() {
-    runApp(MyApp(themeManager: themeManager));
-  }, (error, stackTrace) {
-    debugPrint('Erreur non gérée: $error');
-    debugPrint('Stack trace: $stackTrace');
-  });
+void main() {
+  // Capture unhandled errors
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      
+      // Initialize error handling
+      ErrorHandler.initialize();
+
+      // Initialize theme manager
+      final themeManager = ThemeManager();
+      await themeManager.loadSettings();
+
+      runApp(MyApp(themeManager: themeManager));
+    },
+    (error, stackTrace) {
+      debugPrint('Unhandled error: $error');
+      debugPrint('Stack trace: $stackTrace');
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
   final ThemeManager themeManager;
-  
+
   const MyApp({super.key, required this.themeManager});
 
   @override
@@ -63,10 +66,11 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  String? _selectedUrl;
+  // _selectedUrl removed (unused)
 
   @override
   void initState() {
@@ -84,11 +88,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     final prefs = await SharedPreferences.getInstance();
     final lastUrl = prefs.getString('last_server_url');
     if (lastUrl != null && lastUrl.isNotEmpty) {
+      if (!context.mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => LiberchatWebView(serverUrl: lastUrl),
-        ),
+        MaterialPageRoute(builder: (_) => LiberchatWebView(serverUrl: lastUrl)),
       );
     } else {
       Future.delayed(const Duration(seconds: 2), () {
@@ -103,10 +106,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       MaterialPageRoute(
         builder: (_) => ServerSelectionScreen(
           onServerSelected: (url) async {
-            setState(() => _selectedUrl = url);
+            setState(() {});
             final prefs = await SharedPreferences.getInstance();
             await prefs.setString('last_server_url', url);
+            if (!context.mounted) return;
             Navigator.pop(context);
+            if (!context.mounted) return;
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -153,7 +158,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
         final primaryColor = themeManager.primaryColor;
-        
+
         return Scaffold(
           backgroundColor: backgroundColor,
           body: Stack(
@@ -161,85 +166,85 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      backgroundColor,
-                      primaryColor.withOpacity(0.3),
-                    ],
+                    colors: [backgroundColor, primaryColor.withValues(alpha: 0.3)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                 ),
               ),
-          Center(
-            child: FadeTransition(
-              opacity: _animation,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: isDark 
-                        ? Colors.grey[800]!.withOpacity(0.3)
-                        : Colors.white.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(60),
-                      boxShadow: [
-                        BoxShadow(
-                          color: primaryColor.withOpacity(0.3),
-                          blurRadius: 24,
-                          spreadRadius: 2,
+              Center(
+                child: FadeTransition(
+                  opacity: _animation,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? Colors.grey[800]!.withValues(alpha: 0.3)
+                              : Colors.white.withValues(alpha: 0.3),
+                          borderRadius: BorderRadius.circular(60),
+                          boxShadow: [
+                            BoxShadow(
+                              color: primaryColor.withValues(alpha: 0.3),
+                              blurRadius: 24,
+                              spreadRadius: 2,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: _buildLogo(),
-                    ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: _buildLogo(),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        'LIBERCHAT',
+                        style: TextStyle(
+                          color: isDark ? Colors.white : primaryColor,
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                          shadows: [
+                            Shadow(
+                              color: isDark ? Colors.black : Colors.white,
+                              blurRadius: 8,
+                              offset: const Offset(2, 2),
+                            ),
+                            Shadow(
+                              color: isDark ? primaryColor : Colors.black26,
+                              blurRadius: 16,
+                              offset: const Offset(0, 0),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      CircularProgressIndicator(color: primaryColor),
+                    ],
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'LIBERCHAT',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : primaryColor,
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                      shadows: [
-                        Shadow(
-                          color: isDark ? Colors.black : Colors.white,
-                          blurRadius: 8,
-                          offset: const Offset(2, 2),
-                        ),
-                        Shadow(
-                          color: isDark ? primaryColor : Colors.black26,
-                          blurRadius: 16,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  CircularProgressIndicator(color: primaryColor),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: 32,
-            right: 24,
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               ),
-              icon: const Icon(Icons.swap_horiz),
-              label: const Text('Changer de serveur'),
-              onPressed: _showChangeServerDialog,
-            ),
-          ),
+              Positioned(
+                top: 32,
+                right: 24,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                  ),
+                  icon: const Icon(Icons.swap_horiz),
+                  label: const Text('Change server'),
+                  onPressed: _showChangeServerDialog,
+                ),
+              ),
             ],
           ),
         );
@@ -259,7 +264,7 @@ class LiberchatWebView extends StatefulWidget {
 class _LiberchatWebViewState extends State<LiberchatWebView> {
   InAppWebViewController? _webViewController;
   bool _isLoading = true;
-  bool _useTor = false; // Ajout du mode Tor
+  bool _useTor = false; // Added Tor mode
   bool _checkingOrbot = false;
 
   @override
@@ -287,6 +292,7 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
     if (!_useTor) {
       setState(() => _checkingOrbot = true);
       final running = await isOrbotRunning();
+      if (!mounted) return;
       setState(() => _checkingOrbot = false);
       if (!running) {
         showOrbotHelpDialog(context);
@@ -299,25 +305,14 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
     _saveTorState(!_useTor ? false : true);
   }
 
-  Widget _buildAppBarLogo() {
-    try {
-      return Image.asset(
-        'assets/logo.png', 
-        width: 36, 
-        height: 36,
-        errorBuilder: (context, error, stackTrace) {
-          return ErrorHandler.buildFallbackLogo(size: 36);
-        },
-      );
-    } catch (e) {
-      return ErrorHandler.buildFallbackLogo(size: 36);
-    }
-  }
-
   Future<void> _applyTheme() async {
     if (_webViewController != null) {
       final themeManager = Provider.of<ThemeManager>(context, listen: false);
-      await WebViewThemeInjector.injectTheme(_webViewController!, themeManager, context);
+      await WebViewThemeInjector.injectTheme(
+        _webViewController!,
+        themeManager,
+        context,
+      );
     }
   }
 
@@ -329,228 +324,261 @@ class _LiberchatWebViewState extends State<LiberchatWebView> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _applyTheme();
         });
-        
+
         return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(44),
-        child: AppBar(
-          backgroundColor: themeManager.primaryColor.withOpacity(0.9),
-          elevation: 8,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
-          ),
-          title: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: _buildAppBarLogo(),
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(44),
+            child: AppBar(
+              backgroundColor: themeManager.primaryColor.withValues(alpha: 0.9),
+              elevation: 8,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(24),
+                ),
               ),
-              const SizedBox(width: 12),
-              const Text(
-                'Liberchat Mobile',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-              ),
-            ],
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.swap_horiz),
-              tooltip: 'Changer de serveur',
-              onPressed: () async {
-                final url = await Navigator.push<String>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ServerSelectionScreen(
-                      onServerSelected: (url) {
-                        Navigator.pop(context, url);
-                      },
-                    ),
-                  ),
-                );
-                if (url != null && url.isNotEmpty && url != widget.serverUrl) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => LiberchatWebView(serverUrl: url),
-                    ),
-                  );
-                }
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.settings),
-              tooltip: 'Paramètres',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const SettingsScreen(),
-                  ),
-                );
-              },
-            ),
-            PopupMenuButton<int>(
-              icon: const Icon(Icons.more_vert),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 1,
-                  child: Row(
-                    children: [
-                      const Icon(Icons.open_in_new, color: Colors.black),
-                      const SizedBox(width: 8),
-                      const Text('Ouvrir dans le navigateur'),
-                    ],
+              title: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? Colors.white54 : Colors.black54, width: 1.5),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '3.6',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold, 
+                    fontSize: themeManager.fontSize,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                   ),
                 ),
-                PopupMenuItem(
-                  value: 2,
-                  child: Row(
-                    children: [
-                      Icon(Icons.circle, color: _isLoading ? Colors.red : Colors.green, size: 18),
-                      const SizedBox(width: 8),
-                      Text(_isLoading ? 'Déconnecté/chargement' : 'Connecté'),
-                    ],
-                  ),
+              ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.swap_horiz),
+                  tooltip: 'Change server',
+                  onPressed: () async {
+                    final url = await Navigator.push<String>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ServerSelectionScreen(
+                          onServerSelected: (url) {
+                            Navigator.pop(context, url);
+                          },
+                        ),
+                      ),
+                    );
+                    if (url != null &&
+                        url.isNotEmpty &&
+                        url != widget.serverUrl) {
+                      if (!context.mounted) return;
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => LiberchatWebView(serverUrl: url),
+                        ),
+                      );
+                    }
+                  },
                 ),
-                PopupMenuItem(
-                  value: 3,
-                  child: Row(
-                    children: [
-                      Icon(_useTor ? Icons.shield : Icons.shield_outlined, color: Colors.amber),
-                      const SizedBox(width: 8),
-                      Text(_useTor ? 'Désactiver Tor' : 'Activer Tor'),
-                    ],
-                  ),
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  tooltip: 'Settings',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                    );
+                  },
+                ),
+                PopupMenuButton<int>(
+                  icon: const Icon(Icons.more_vert),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 1,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.open_in_new, color: Colors.black),
+                          const SizedBox(width: 8),
+                          const Text('Open in browser'),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 2,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: _isLoading ? Colors.red : Colors.green,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            _isLoading ? 'Disconnected/Loading' : 'Connected',
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 3,
+                      child: Row(
+                        children: [
+                          Icon(
+                            _useTor ? Icons.shield : Icons.shield_outlined,
+                            color: Colors.amber,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(_useTor ? 'Disable Tor' : 'Enable Tor'),
+                        ],
+                      ),
+                    ),
+                  ],
+                  onSelected: (value) async {
+                    if (value == 1) {
+                      String? url;
+                      if (_webViewController != null) {
+                        url = (await _webViewController?.getUrl())?.toString();
+                      }
+                      url ??= widget.serverUrl;
+                      if (url.isNotEmpty) {
+                        await launchUrl(
+                          Uri.parse(url),
+                          mode: LaunchMode.externalApplication,
+                        );
+                      } else {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('URL not available.')),
+                        );
+                      }
+                    } else if (value == 3) {
+                      if (!_checkingOrbot) {
+                        _toggleTor();
+                      }
+                    }
+                  },
                 ),
               ],
-              onSelected: (value) async {
-                if (value == 1) {
-                  String? url;
-                  if (_webViewController != null) {
-                    url = (await _webViewController?.getUrl())?.toString();
-                  }
-                  url ??= widget.serverUrl;
-                  if (url.isNotEmpty) {
-                    await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('URL non disponible.')),
+            ),
+          ),
+          body: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      themeManager.primaryColor.withValues(alpha: 0.8),
+                      themeManager.primaryColor.withValues(alpha: 0.3),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
+                child: InAppWebView(
+                  initialUrlRequest: URLRequest(url: WebUri(widget.serverUrl)),
+                  onWebViewCreated: (controller) {
+                    _webViewController = controller;
+                  },
+                  onLoadStart: (controller, url) {
+                    setState(() => _isLoading = true);
+                  },
+                  onLoadStop: (controller, url) async {
+                    setState(() => _isLoading = false);
+                    debugPrint('WebView loaded: $url');
+
+                    // Injecter le thème après le chargement de la page
+                    final themeManager = Provider.of<ThemeManager>(
+                      context,
+                      listen: false,
                     );
-                  }
-                } else if (value == 3) {
-                  if (!_checkingOrbot) {
-                    _toggleTor();
-                  }
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  themeManager.primaryColor.withOpacity(0.8),
-                  themeManager.primaryColor.withOpacity(0.3),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-          ),
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            child: InAppWebView(
-              initialUrlRequest: URLRequest(
-                url: WebUri(widget.serverUrl),
-              ),
-              onWebViewCreated: (controller) {
-                _webViewController = controller;
-              },
-              onLoadStart: (controller, url) {
-                setState(() => _isLoading = true);
-              },
-              onLoadStop: (controller, url) async {
-                setState(() => _isLoading = false);
-                debugPrint('WebView loaded: $url');
-                
-                // Injecter le thème après le chargement de la page
-                final themeManager = Provider.of<ThemeManager>(context, listen: false);
-                await WebViewThemeInjector.injectTheme(controller, themeManager, context);
-              },
-              onLoadError: (controller, url, code, message) {
-                debugPrint('WebView error: $code - $message for URL: $url');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Erreur de chargement: $message'),
-                    action: SnackBarAction(
-                      label: 'Réessayer',
-                      onPressed: () => controller.reload(),
-                    ),
+                    await WebViewThemeInjector.injectTheme(
+                      controller,
+                      themeManager,
+                      context,
+                    );
+                  },
+                  onReceivedError: (controller, request, error) {
+                    debugPrint('WebView error: ${error.type} - ${error.description} for URL: ${request.url}');
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Loading error: ${error.description}'),
+                          action: SnackBarAction(
+                            label: 'Retry',
+                            onPressed: () => controller.reload(),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  onReceivedHttpError: (controller, request, errorResponse) {
+                    debugPrint(
+                      'WebView HTTP error: ${errorResponse.statusCode} for URL: ${request.url}',
+                    );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('HTTP Error ${errorResponse.statusCode}'),
+                          action: SnackBarAction(
+                            label: 'Retry',
+                            onPressed: () => controller.reload(),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  initialSettings: InAppWebViewSettings(
+                    useShouldOverrideUrlLoading: true,
+                    mediaPlaybackRequiresUserGesture: false,
+                    javaScriptEnabled: true,
+                    clearCache: false,
+                    cacheEnabled: true,
+                    userAgent:
+                        'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36',
+                    mixedContentMode: MixedContentMode
+                        .MIXED_CONTENT_COMPATIBILITY_MODE,
+                    allowContentAccess: true,
+                    allowFileAccess: true,
+                    supportMultipleWindows: false,
                   ),
-                );
-              },
-              onLoadHttpError: (controller, url, statusCode, description) {
-                debugPrint('WebView HTTP error: $statusCode - $description for URL: $url');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Erreur HTTP $statusCode: $description'),
-                    action: SnackBarAction(
-                      label: 'Réessayer',
-                      onPressed: () => controller.reload(),
-                    ),
-                  ),
-                );
-              },
-              initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(
-                  useShouldOverrideUrlLoading: true,
-                  mediaPlaybackRequiresUserGesture: false,
-                  javaScriptEnabled: true,
-                  clearCache: false,
-                  cacheEnabled: true,
-                  userAgent: 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36',
-                ),
-                android: AndroidInAppWebViewOptions(
-                  useHybridComposition: true,
-                  mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_COMPATIBILITY_MODE,
-                  allowContentAccess: true,
-                  allowFileAccess: true,
-                  supportMultipleWindows: false,
+                  onPermissionRequest: (controller, request) async {
+                    if (request.resources.any((r) => r.toString().contains('AUDIO_CAPTURE') || r == PermissionResourceType.MICROPHONE)) {
+                      return PermissionResponse(
+                        resources: request.resources,
+                        action: PermissionResponseAction.GRANT,
+                      );
+                    } else {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Only microphone permission is allowed.',
+                            ),
+                          ),
+                        );
+                      }
+                      return PermissionResponse(
+                        resources: request.resources,
+                        action: PermissionResponseAction.DENY,
+                      );
+                    }
+                  },
                 ),
               ),
-              androidOnPermissionRequest: (controller, origin, resources) async {
-                // N'accorder que la permission micro
-                if (resources.contains('android.webkit.resource.AUDIO_CAPTURE')) {
-                  return PermissionRequestResponse(
-                    resources: resources,
-                    action: PermissionRequestResponseAction.GRANT,
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Seule la permission micro est autorisée.')),
-                  );
-                  return PermissionRequestResponse(
-                    resources: resources,
-                    action: PermissionRequestResponseAction.DENY,
-                  );
-                }
-              },
-            ),
+              if (_isLoading)
+                const Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                ),
+              if (_checkingOrbot)
+                const Center(
+                  child: CircularProgressIndicator(color: Colors.amber),
+                ),
+            ],
           ),
-          if (_isLoading)
-            const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            ),
-          if (_checkingOrbot)
-            const Center(
-              child: CircularProgressIndicator(color: Colors.amber),
-            ),
-        ],
-      ),
         );
       },
     );

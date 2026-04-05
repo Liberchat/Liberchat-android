@@ -7,22 +7,22 @@ class WebViewThemeInjector {
     final primaryColor = themeManager.primaryColor;
     final fontSize = themeManager.fontSize;
     
-    // Convertir la couleur Flutter en hex
-    final primaryHex = '#${primaryColor.value.toRadixString(16).substring(2)}';
+    // Convert Flutter color to hex
+    final primaryHex = '#${primaryColor.toARGB32().toRadixString(16).substring(2)}';
     
     return '''
       <style id="liberchat-custom-theme">
-        /* Variables CSS personnalisées */
+        /* Custom CSS Variables */
         :root {
           --primary-color: $primaryHex !important;
-          --primary-rgb: ${primaryColor.red}, ${primaryColor.green}, ${primaryColor.blue} !important;
+          --primary-rgb: ${(primaryColor.r * 255.0).round().clamp(0, 255)}, ${(primaryColor.g * 255.0).round().clamp(0, 255)}, ${(primaryColor.b * 255.0).round().clamp(0, 255)} !important;
           --base-font-size: ${fontSize}px !important;
           --bg-color: ${isDarkMode ? '#1a1a1a' : '#ffffff'} !important;
           --text-color: ${isDarkMode ? '#ffffff' : '#000000'} !important;
           --secondary-bg: ${isDarkMode ? '#2d2d2d' : '#f5f5f5'} !important;
         }
         
-        /* Application des styles globaux */
+        /* Global styles application */
         * {
           font-size: var(--base-font-size) !important;
         }
@@ -33,7 +33,7 @@ class WebViewThemeInjector {
           font-size: var(--base-font-size) !important;
         }
         
-        /* Styles pour les boutons principaux */
+        /* Styles for main buttons */
         button, .btn, [role="button"] {
           background-color: var(--primary-color) !important;
           border-color: var(--primary-color) !important;
@@ -44,13 +44,13 @@ class WebViewThemeInjector {
           background-color: color-mix(in srgb, var(--primary-color) 80%, black) !important;
         }
         
-        /* Styles pour les liens */
+        /* Styles for links */
         a {
           color: var(--primary-color) !important;
           font-size: var(--base-font-size) !important;
         }
         
-        /* Styles pour les titres */
+        /* Styles for headings */
         h1 { font-size: calc(var(--base-font-size) + 8px) !important; }
         h2 { font-size: calc(var(--base-font-size) + 6px) !important; }
         h3 { font-size: calc(var(--base-font-size) + 4px) !important; }
@@ -58,13 +58,13 @@ class WebViewThemeInjector {
         h5 { font-size: calc(var(--base-font-size) + 1px) !important; }
         h6 { font-size: var(--base-font-size) !important; }
         
-        /* Styles pour les paragraphes et texte */
+        /* Styles for paragraphs and text */
         p, span, div, label, input, textarea {
           font-size: var(--base-font-size) !important;
           color: var(--text-color) !important;
         }
         
-        /* Styles pour les champs de saisie */
+        /* Styles for input fields */
         input, textarea, select {
           background-color: var(--secondary-bg) !important;
           border-color: var(--primary-color) !important;
@@ -77,29 +77,29 @@ class WebViewThemeInjector {
           box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2) !important;
         }
         
-        /* Styles pour les cartes et conteneurs */
+        /* Styles for cards and containers */
         .card, .panel, .container, .content {
           background-color: var(--secondary-bg) !important;
           color: var(--text-color) !important;
         }
         
-        /* Styles pour les barres de navigation */
+        /* Styles for navigation bars */
         nav, .navbar, .header {
           background-color: var(--primary-color) !important;
         }
         
-        /* Styles pour les éléments actifs/sélectionnés */
+        /* Styles for active/selected elements */
         .active, .selected, .current {
           background-color: var(--primary-color) !important;
           color: white !important;
         }
         
-        /* Styles pour les bordures */
+        /* Styles for borders */
         .border, .bordered {
           border-color: var(--primary-color) !important;
         }
         
-        /* Styles spécifiques pour LibreChat */
+        /* Specific styles for LibreChat */
         .chat-message {
           font-size: var(--base-font-size) !important;
         }
@@ -114,12 +114,12 @@ class WebViewThemeInjector {
           background-color: var(--secondary-bg) !important;
         }
         
-        /* Animation pour les changements de thème */
+        /* Animation for theme changes */
         * {
           transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
         }
         
-        /* Styles pour le mode sombre */
+        /* Styles for dark mode */
         ${isDarkMode ? '''
         body {
           background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
@@ -131,7 +131,7 @@ class WebViewThemeInjector {
           color: #ffffff !important;
         }
         
-        /* Amélioration de la lisibilité en mode sombre */
+        /* Improvement of readability in dark mode */
         h1, h2, h3, h4, h5, h6 {
           color: #ffffff !important;
           text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
@@ -141,7 +141,7 @@ class WebViewThemeInjector {
           color: #e0e0e0 !important;
         }
         
-        /* Contraste amélioré pour les liens */
+        /* Improved contrast for links */
         a {
           color: var(--primary-color) !important;
           text-shadow: 0 0 2px rgba(var(--primary-rgb), 0.5) !important;
@@ -157,7 +157,7 @@ class WebViewThemeInjector {
           color: #000000 !important;
         }
         
-        /* Amélioration de la lisibilité en mode clair */
+        /* Improvement of readability in light mode */
         h1, h2, h3, h4, h5, h6 {
           color: #1a1a1a !important;
           text-shadow: 1px 1px 2px rgba(255,255,255,0.5) !important;
@@ -174,28 +174,28 @@ class WebViewThemeInjector {
   static String generateJavaScript(ThemeManager themeManager, bool isDarkMode) {
     return '''
       (function() {
-        // Supprimer l'ancien style s'il existe
+        // Remove old style if it exists
         const oldStyle = document.getElementById('liberchat-custom-theme');
         if (oldStyle) {
           oldStyle.remove();
         }
         
-        // Injecter le nouveau CSS
+        // Inject new CSS
         const style = document.createElement('style');
         style.id = 'liberchat-custom-theme';
         style.innerHTML = \`${generateCSS(themeManager, isDarkMode).replaceAll('`', '\\`')}\`;
         document.head.appendChild(style);
         
-        // Ajouter des classes au body
+        // Add classes to body
         document.body.classList.remove('light-mode', 'dark-mode');
         document.body.classList.add('${isDarkMode ? 'dark-mode' : 'light-mode'}');
         
-        // Forcer le rafraîchissement des styles
+        // Force styles refresh
         document.body.style.display = 'none';
         document.body.offsetHeight; // Trigger reflow
         document.body.style.display = '';
         
-        console.log('Thème Liberchat appliqué: ${themeManager.colorName}, Taille: ${themeManager.fontSize}px, Mode: ${isDarkMode ? 'Sombre' : 'Clair'}');
+        console.log('Liberchat theme applied: ${themeManager.colorName}, Size: ${themeManager.fontSize}px, Mode: ${isDarkMode ? 'Dark' : 'Light'}');
       })();
     ''';
   }
@@ -206,16 +206,16 @@ class WebViewThemeInjector {
     BuildContext context,
   ) async {
     try {
-      // Déterminer si on est en mode sombre
+      // Determine if we are in dark mode
       final brightness = Theme.of(context).brightness;
       final isDarkMode = brightness == Brightness.dark;
       
-      // Injecter le JavaScript qui applique le thème
+      // Inject JavaScript that applies the theme
       await controller.evaluateJavascript(
         source: generateJavaScript(themeManager, isDarkMode),
       );
     } catch (e) {
-      debugPrint('Erreur lors de l\'injection du thème: $e');
+      debugPrint('Error during theme injection: $e');
     }
   }
 }

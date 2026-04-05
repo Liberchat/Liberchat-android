@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      requestMicrophonePermission(context);
+      requestAllPermissions(context);
     });
     Timer(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(
@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Signe graphique anarcho-syndicaliste : cercle rouge-noir
+              // Anarcho-syndicalist graphic sign: red-black circle
               Container(
                 width: 120,
                 height: 120,
@@ -95,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Anarcho-syndicalisme moderne',
+                'Connecting to Liberchat...',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,

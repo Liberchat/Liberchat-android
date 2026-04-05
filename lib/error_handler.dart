@@ -22,7 +22,7 @@ class ErrorHandler {
           ),
           const SizedBox(height: 16),
           Text(
-            'Erreur',
+            'Error',
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -52,7 +52,7 @@ class ErrorHandler {
         borderRadius: BorderRadius.circular(size / 2),
         boxShadow: [
           BoxShadow(
-            color: Colors.red.withOpacity(0.3),
+            color: Colors.red.withValues(alpha: 0.3),
             blurRadius: 12,
             spreadRadius: 2,
           ),

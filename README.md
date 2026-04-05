@@ -13,164 +13,156 @@
 
 ---
 
-Liberchat est une application de chat moderne, open-source, basée sur Flutter et dédiée uniquement à Android.
+Liberchat is a modern, open-source chat application, based on Flutter and dedicated exclusively to Android.
 
-**Version actuelle :** 3.6.0 | 
+**Current Version:** 3.6.0 | 
 
-## ✨ Fonctionnalités
-- 🎨 Interface moderne et responsive
-- 🔒 WebView sécurisé avec gestion des permissions
-- ✨ Splash screen animé avec gradient dynamique
-- 🌙 Thème sombre élégant avec personnalisation
-- 🎯 Icône personnalisée avec fallback automatique
-- 🌐 Sélection du serveur au démarrage (auto-hébergement possible)
-- 🔐 Support de Tor via Orbot pour la confidentialité
-- 📱 Optimisé pour Android uniquement
-- 📁 **NOUVEAU** - Gestion complète du stockage et des médias
-- 🎤 **NOUVEAU** - Permissions audio avancées
-- 📥 **NOUVEAU** - Support des téléchargements
-- 🔧 **NOUVEAU** - Gestion d'erreurs améliorée
-- ⚙️ **NOUVEAU** - Écran de paramètres intégré
-- 🎨 **NOUVEAU** - Injection de thème dynamique dans WebView
+## ✨ Features
+-  Modern and responsive interface
+-  Secure WebView with permission management
+-  Animated splash screen with dynamic gradient
+-  Elegant dark theme with customization
+-  Custom icon with automatic fallback
+-  Server selection at startup (self-hosting possible)
+-  Tor support via Orbot for privacy
+-  Optimized for Android only
+-  **NEW** - Full storage and media management
+-  **NEW** - Advanced audio permissions
+-  **NEW** - Download support
+-  **NEW** - Improved error handling
+-  **NEW** - Integrated settings screen
+-  **NEW** - Dynamic theme injection in WebView
 
-## 📦 Installation
+##  Installation
 
-### APK Direct
-Téléchargez la dernière version APK depuis :
-- [Releases GitHub](https://github.com/Liberchat/Liberchat-android/releases/tag/v3.6.0)
-- APK disponible : `app-release.apk` (49.3 MB)
+### Direct APK
+Download the latest APK version from:
+- [GitHub Releases](https://github.com/Liberchat/Liberchat-android/releases/tag/v3.6.0)
+- Available APK: `app-release.apk` (49.3 MB)
 
-### Installation manuelle
+### Manual Installation
 ```bash
-# Téléchargez l'APK et installez
+# Download the APK and install
 adb install app-release.apk
 ```
 
-##  Développement local
+## Local Development
 ```bash
-# Clonez le repo
+# Clone the repo
 git clone https://github.com/Liberchat/Liberchat-android
 cd Liberchat-android
 
-# Installez les dépendances
+# Install dependencies
 flutter pub get
 
-# Lancez l'application sur Android
+# Run the application on Android
 flutter run
 ```
 
-##  Développement
+## Development
 
-### Prérequis
+### Prerequisites
 - Flutter 3.8.1+
 - Android SDK
 - Dart SDK
 
 ### Configuration
 ```bash
-# Vérifiez votre installation Flutter
+# Check your Flutter installation
 flutter doctor
 
-# Installez les dépendances
+# Install dependencies
 flutter pub get
 
-# Compilez l'APK
+# Build the APK
 flutter build apk --release
 ```
 
-### Structure du projet
-- `lib/` - Code source principal
-- `android/` - Configuration Android
-- `assets/` - Ressources (logos, images)
-- `metadata/` - Métadonnées F-Droid
+### Project Structure
+- `lib/` - Main source code
+- `android/` - Android configuration
+- `assets/` - Resources (logos, images)
+- `metadata/` - F-Droid metadata
 
-### Dépendances principales
-- `flutter_inappwebview` ^6.0.0 - WebView sécurisé
-- `permission_handler` ^11.0.1 - Gestion des permissions
-- `socket_io_client` ^2.0.3 - Communication temps réel
-- `encrypt` ^5.0.3 - Chiffrement
-- `shared_preferences` ^2.2.2 - Stockage local
-- `provider` ^6.1.1 - Gestion d'état
-- `url_launcher` ^6.2.5 - Ouverture d'URLs
-- `flutter_custom_tabs` ^1.2.0 - Onglets personnalisés
+### Main Dependencies
+- `flutter_inappwebview` ^6.0.0 - Secure WebView
+- `permission_handler` ^11.0.1 - Permission management
+- `socket_io_client` ^2.0.3 - Real-time communication
+- `encrypt` ^5.0.3 - Encryption
+- `shared_preferences` ^2.2.2 - Local storage
+- `provider` ^6.1.1 - State management
+- `url_launcher` ^6.2.5 - Opening URLs
+- `flutter_custom_tabs` ^1.2.0 - Custom tabs
 
-## 🔒 Confidentialité et Sécurité
+##  Privacy and Security
 
-Liberchat respecte votre vie privée :
-- ✅ **Aucun tracker** - Pas de collecte de données
-- ✅ **Open Source** - Code source entièrement accessible
-- ✅ **Support Tor** - Navigation anonyme via Orbot
-- ✅ **Auto-hébergement** - Connectez-vous à votre propre serveur
-- ✅ **Chiffrement** - Communications sécurisées
-- ✅ **Permissions granulaires** - Contrôle précis des accès
-- ✅ **Stockage sécurisé** - Gestion sécurisée des fichiers
+Liberchat respects your privacy:
+-  **No trackers** - No data collection
+-  **Open Source** - Fully accessible source code
+-  **Tor Support** - Anonymous navigation via Orbot
+-  **Self-hosting** - Connect to your own server
+-  **Encryption** - Secure communications
+-  **Granular Permissions** - Precise access control
+-  **Secure Storage** - Secure file management
 
-## 📊 F-Droid
+## F-Droid
 
-**Statut :** Mise à jour en cours 🔄  
-**Version :** 3.6.0  
-**ID d'application :** `com.liberchat.mobile`  
-**Licence :** MIT  
+**Status:** Update in progress 🔄  
+**Version:** 3.6.0  
+**Application ID:** `com.liberchat.mobile`  
+**License:** MIT  
 
-L'application respecte toutes les exigences F-Droid :
-- Code source libre
-- Pas de trackers ou publicités
-- Build reproductible
-- Métadonnées complètes
+The application meets all F-Droid requirements:
+- Free source code
+- No trackers or ads
+- Reproducible build
+- Complete metadata
 
-## 🤝 Contribuer
+##  Contributing
 
-Les contributions sont les bienvenues ! 
+Contributions are welcome! 
 
-### Comment contribuer :
-1. Fork le projet
-2. Créez une branche feature (`git checkout -b feature/AmazingFeature`)
-3. Committez vos changements (`git commit -m 'Add AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrez une Pull Request
+### How to contribute:
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### Signaler des bugs
-Ouvrez une [issue](https://github.com/Liberchat/Liberchat-android/issues) avec :
-- Description du problème
-- Étapes pour reproduire
-- Version d'Android
-- Logs si possible
+### Reporting bugs
+Open an [issue](https://github.com/Liberchat/Liberchat-android/issues) with:
+- Problem description
+- Steps to reproduce
+- Android version
+- Logs if possible
 
-## 📄 Licence
+## License
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE.md](LICENSE.md) pour plus de détails.
+This project is licensed under the MIT License. See the [LICENSE.md](LICENSE.md) file for more details.
 
-## 🔗 Liens utiles
 
-- [Site web](https://github.com/Liberchat)
-- [Issues](https://github.com/Liberchat/Liberchat-android/issues)
-- [Releases](https://github.com/Liberchat/Liberchat-android/releases)
-- [F-Droid RFP](https://gitlab.com/fdroid/rfp/-/issues)
+## What's New v3.6.0
 
----
+### Storage Management
+- Full support for Android storage permissions
+- Media access (images, videos, audio)
+- Downloads without notification
+- Android 13+ compatibility (API 33)
 
-## 🆕 Nouveautés v3.6.0
-
-### Gestion du stockage
-- Support complet des permissions de stockage Android
-- Accès aux médias (images, vidéos, audio)
-- Téléchargements sans notification
-- Compatibilité Android 13+ (API 33)
-
-### Interface utilisateur
-- Écran de paramètres avec gestion des thèmes
-- Injection dynamique de thème dans WebView
-- Gestion d'erreurs avec fallback automatique
-- Indicateurs de connexion améliorés
+### User Interface
+- Settings screen with theme management
+- Dynamic theme injection in WebView
+- Error management with automatic fallback
+- Improved connection indicators
 
 ### Permissions
-- Demande automatique de toutes les permissions
-- Messages d'erreur informatifs
-- Gestion granulaire des accès
+- Automatic request for all permissions
+- Informative error messages
+- Granular access management
 
 ---
 
 <p align="center">
   <b>Made with ❤️ by the Liberchat team</b><br>
-  <i>Liberchat v3.6.0 - Janvier 2025</i>
+  <i>Liberchat v3.6.0 - January 2025</i>
 </p>

@@ -28,12 +28,12 @@ class ThemeManager extends ChangeNotifier {
   };
 
   static const Map<AppColorTheme, String> _colorNames = {
-    AppColorTheme.red: 'Rouge',
-    AppColorTheme.blue: 'Bleu',
-    AppColorTheme.green: 'Vert',
-    AppColorTheme.purple: 'Violet',
+    AppColorTheme.red: 'Red',
+    AppColorTheme.blue: 'Blue',
+    AppColorTheme.green: 'Green',
+    AppColorTheme.purple: 'Purple',
     AppColorTheme.orange: 'Orange',
-    AppColorTheme.teal: 'Turquoise',
+    AppColorTheme.teal: 'Teal',
   };
 
   Color get primaryColor => _primaryColors[_colorTheme]!;

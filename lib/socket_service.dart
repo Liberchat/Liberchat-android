@@ -1,16 +1,20 @@
 import 'dart:convert';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class SocketService {
-  late IO.Socket socket;
+  late io.Socket socket;
 
-  void connect({required Function(dynamic) onMessage, required Function() onConnect, required Function(dynamic) onError}) {
-    socket = IO.io(
-      'https://liberchat-3-0-1.onrender.com',
-      IO.OptionBuilder()
-        .setTransports(['websocket'])
-        .disableAutoConnect()
-        .build(),
+  void connect({
+    required Function(dynamic) onMessage,
+    required Function() onConnect,
+    required Function(dynamic) onError,
+  }) {
+    socket = io.io(
+      'https://liberchat.cnt-ait-contact.noho.st/liberchat/',
+      io.OptionBuilder()
+          .setTransports(['websocket'])
+          .disableAutoConnect()
+          .build(),
     );
 
     socket.onConnect((_) => onConnect());

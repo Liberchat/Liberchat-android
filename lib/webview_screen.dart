@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'permission_request.dart';
 
-const String kWebviewUrl = 'https://liberchat-3-0-1.onrender.com/';
+const String kWebviewUrl = 'https://liberchat.cnt-ait-contact.noho.st/liberchat/';
 
 class WebviewScreen extends StatefulWidget {
   const WebviewScreen({super.key});
@@ -16,37 +15,20 @@ class WebviewScreen extends StatefulWidget {
 class _WebviewScreenState extends State<WebviewScreen> {
   InAppWebViewController? _webViewController;
   bool _isLoading = true;
-  bool _useExternalBrowser = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      requestMicrophonePermission(context);
+      requestAllPermissions(context);
     });
   }
 
   Future<void> _openInExternalBrowser() async {
     try {
-      await launch(
-        kWebviewUrl,
-        customTabsOption: CustomTabsOption(
-          enableUrlBarHiding: true,
-          showPageTitle: false,
-        ),
-        safariVCOption: SafariViewControllerOption(
-          preferredBarTintColor: Color(0xFFB71C1C),
-          preferredControlTintColor: Colors.white,
-          barCollapsingEnabled: true,
-          entersReaderIfAvailable: false,
-          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-        ),
-      );
+      await launchUrl(Uri.parse(kWebviewUrl), mode: LaunchMode.externalApplication);
     } catch (e) {
-      // Fallback vers url_launcher si flutter_custom_tabs échoue
-      try {
-        await launchUrl(Uri.parse(kWebviewUrl), mode: LaunchMode.externalApplication);
-      } catch (e2) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Impossible d\'ouvrir le navigateur externe.')),
         );
@@ -72,7 +54,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
                   children: [
                     const Icon(Icons.open_in_new, color: Colors.black),
                     const SizedBox(width: 8),
-                    const Text('Ouvrir dans le navigateur'),
+                    const Text('Open in browser'),
                   ],
                 ),
               ),
@@ -82,7 +64,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
                   children: [
                     const Icon(Icons.refresh, color: Colors.black),
                     const SizedBox(width: 8),
-                    const Text('Actualiser'),
+                    const Text('Refresh'),
                   ],
                 ),
               ),
@@ -121,54 +103,53 @@ class _WebviewScreenState extends State<WebviewScreen> {
               onLoadStop: (controller, url) {
                 setState(() => _isLoading = false);
               },
-              onLoadError: (controller, url, code, message) {
-                debugPrint('WebView error: $code - $message');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Erreur de chargement: $message'),
-                    action: SnackBarAction(
-                      label: 'Navigateur externe',
-                      onPressed: _openInExternalBrowser,
+              onReceivedError: (controller, request, error) {
+                debugPrint('WebView error: ${error.type} - ${error.description}');
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Loading error: ${error.description}'),
+                      action: SnackBarAction(
+                        label: 'External browser',
+                        onPressed: _openInExternalBrowser,
+                      ),
                     ),
-                  ),
-                );
-              },
-              onLoadHttpError: (controller, url, statusCode, description) {
-                debugPrint('WebView HTTP error: $statusCode - $description');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Erreur HTTP $statusCode: $description'),
-                    action: SnackBarAction(
-                      label: 'Navigateur externe',
-                      onPressed: _openInExternalBrowser,
-                    ),
-                  ),
-                );
-              },
-              initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(
-                  useShouldOverrideUrlLoading: true,
-                  mediaPlaybackRequiresUserGesture: false,
-                  javaScriptEnabled: true,
-                  clearCache: false,
-                  cacheEnabled: true,
-                  userAgent: 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36',
-                ),
-                android: AndroidInAppWebViewOptions(
-                  useHybridComposition: true,
-                  mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_COMPATIBILITY_MODE,
-                ),
-              ),
-              androidOnPermissionRequest: (controller, origin, resources) async {
-                if (resources.contains('android.webkit.resource.AUDIO_CAPTURE')) {
-                  return PermissionRequestResponse(
-                    resources: resources,
-                    action: PermissionRequestResponseAction.GRANT,
                   );
                 }
-                return PermissionRequestResponse(
-                  resources: resources,
-                  action: PermissionRequestResponseAction.DENY,
+              },
+              onReceivedHttpError: (controller, request, errorResponse) {
+                debugPrint('WebView HTTP error: ${errorResponse.statusCode}');
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('HTTP error ${errorResponse.statusCode}'),
+                      action: SnackBarAction(
+                        label: 'External browser',
+                        onPressed: _openInExternalBrowser,
+                      ),
+                    ),
+                  );
+                }
+              },
+              initialSettings: InAppWebViewSettings(
+                useShouldOverrideUrlLoading: true,
+                mediaPlaybackRequiresUserGesture: false,
+                javaScriptEnabled: true,
+                clearCache: false,
+                cacheEnabled: true,
+                userAgent: 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36',
+                mixedContentMode: MixedContentMode.MIXED_CONTENT_COMPATIBILITY_MODE,
+              ),
+              onPermissionRequest: (controller, request) async {
+                if (request.resources.any((r) => r.toString().contains('AUDIO_CAPTURE') || r == PermissionResourceType.MICROPHONE)) {
+                  return PermissionResponse(
+                    resources: request.resources,
+                    action: PermissionResponseAction.GRANT,
+                  );
+                }
+                return PermissionResponse(
+                  resources: request.resources,
+                  action: PermissionResponseAction.DENY,
                 );
               },
             ),
