@@ -1,0 +1,35 @@
+# Zapstore configuration for Liberchat
+repository: https://github.com/Liberchat/Liberchat-android
+pubkey: npub1e39kumqu83vmdmj6xcru3w0qmynt6rdvq26djsyxcglfrqhl4kxqzkq0p3
+
+# App metadata
+name: Liberchat
+summary: "Decentralized privacy-focused militant chat"
+description: |
+  Decentralized militant-focused privacy chat with end-to-end encryption 
+  (AES-256-GCM + X25519), file sharing and multi-domain support including Tor.
+
+website: https://liberchat.unionlibertaireanarchiste.org/
+license: AGPL-3.0
+
+# Screenshots (required for Zapstore)
+screenshots:
+  - https://github.com/Liberchat/Liberchat-android/raw/main/assets/918.png
+  - https://github.com/Liberchat/Liberchat-android/raw/main/assets/922.png
+  - https://github.com/Liberchat/Liberchat-android/raw/main/assets/918.png
+
+# Icon (required for Zapstore)
+icon: https://github.com/Liberchat/Liberchat-android/raw/main/assets/logo.png
+
+# Categories
+categories:
+  - communication
+  - social
+  - privacy
+
+# Metadata sources for enrichment
+metadata_sources:
+  - github
+
+# APK source (if you have APK builds)
+release_source: https://github.com/Liberchat/Liberchat-android/releases/download/v3.6.0/Liberchat-3.6.0.apk
