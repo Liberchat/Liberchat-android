@@ -14,12 +14,12 @@ license: AGPL-3.0
 
 # Screenshots (required for Zapstore)
 screenshots:
-  - https://github.com/Liberchat/Liberchat-android/raw/main/assets/918.png
-  - https://github.com/Liberchat/Liberchat-android/raw/main/assets/922.png
-  - https://github.com/Liberchat/Liberchat-android/raw/main/assets/918.png
+  - https://github.com/Liberchat/Liberchat-android/raw/Liberchat3.6/assets/918.png
+  - https://github.com/Liberchat/Liberchat-android/raw/Liberchat3.6/assets/922.png
+  - https://github.com/Liberchat/Liberchat-android/raw/Liberchat3.6/assets/919.png
 
 # Icon (required for Zapstore)
-icon: https://github.com/Liberchat/Liberchat-android/raw/main/assets/logo.png
+icon: https://github.com/Liberchat/Liberchat-android/raw/Liberchat3.6/assets/logo.png
 
 # Categories
 categories:
